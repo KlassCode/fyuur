@@ -1,7 +1,7 @@
 #----------------------------------------------------------------------------#
 # Imports
 #----------------------------------------------------------------------------#
-
+import datetime
 import json
 import dateutil.parser
 import os
@@ -42,6 +42,7 @@ class Venue(db.Model):
     phone = db.Column(db.String(120))
     image_link = db.Column(db.String(500))
     facebook_link = db.Column(db.String(120))
+    shows = db.relationship('Show',backref="list",lazy=True)
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
 
@@ -56,11 +57,15 @@ class Artist(db.Model):
     genres = db.Column(db.String(120))
     image_link = db.Column(db.String(500))
     facebook_link = db.Column(db.String(120))
+    shows = db.relationship('Show',backref="list",lazy=True)
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
 
 class Show(db.Model):
-      pass
+      id = db.Column(db.Integer, primary_key=True)
+      artist_id = db.Column(db.Integer,db.ForeignKey('artists.id'),nullable=False)
+      venue_id = db.Column(db.Integer,db.ForeignKey('venues.id'),nullable=False)
+      start_time = db.Column(db.DateTime(),nullable=False)
 # TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration.
 
 #----------------------------------------------------------------------------#
